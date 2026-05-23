@@ -148,6 +148,34 @@ footer {
   color: var(--muted);
 }
 
+/* Photos */
+
+.photos-section {
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.photos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.photo {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  border-radius: 4px;
+}
+
+@media (max-width: 480px) {
+  .photos-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Fade-in animation (triggered by JS) */
 
 .fade-in {

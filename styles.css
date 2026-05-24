@@ -123,16 +123,16 @@ body {
   text-align: center;
 }
 
-.hero-school {
-  font-size: clamp(3.5rem, 12vw, 7rem);
-  font-weight: 800;
+.hero-title {
+  font-size: clamp(5rem, 18vw, 11rem);
+  font-weight: 900;
   color: #fff;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  margin-bottom: 0.75rem;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  margin-bottom: 1rem;
 }
 
-.hero-school span {
+.hero-title span {
   color: var(--accent);
 }
 
@@ -150,11 +150,11 @@ body {
 }
 
 .hero h1 {
-  font-size: clamp(2.2rem, 6vw, 3.8rem);
-  font-weight: 800;
-  color: #fff;
-  line-height: 1.15;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   margin-bottom: 1.25rem;
 }
 
@@ -235,6 +235,41 @@ body {
   max-width: 480px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* ── Dark idea section ── */
+
+.section-dark {
+  background: #111;
+}
+
+.idea-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+.idea-block {
+  text-align: center;
+  padding: 1rem;
+}
+
+.idea-icon {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.idea-block h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.6rem;
+}
+
+.idea-block p {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.7;
 }
 
 /* ── Cards (For whom) ── */
@@ -392,6 +427,13 @@ body {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
+}
+
+.footer-tagline {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.35);
+  margin-top: 0.2rem;
+  letter-spacing: 0.03em;
 }
 
 .footer-copy {

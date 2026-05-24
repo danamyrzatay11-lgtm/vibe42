@@ -1,12 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+
   // Fade-in on scroll
   const targets = document.querySelectorAll(".section, .card, .module");
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-        }
+        if (entry.isIntersecting) entry.target.classList.add("visible");
       });
     },
     { threshold: 0.1 }
@@ -16,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(el);
   });
 
-  // Nav background on scroll
+  // Nav border on scroll
   const nav = document.querySelector(".nav");
   window.addEventListener("scroll", () => {
     nav.style.borderBottomColor = window.scrollY > 10
@@ -24,22 +23,38 @@ document.addEventListener("DOMContentLoaded", () => {
       : "rgba(255,255,255,0.07)";
   });
 
-  // Form submit handler
-  const form = document.querySelector(".form");
+  // WhatsApp form
+  const form = document.getElementById("applyForm");
+  const successBox = document.getElementById("successBox");
+
   if (form) {
-    form.addEventListener("submit", async (e) => {
-      const btn = form.querySelector("button[type=submit]");
-      const action = form.getAttribute("action");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
 
-      // If Formspree endpoint isn't configured yet — show alert
-      if (action.includes("ВАША_ФОРМА")) {
-        e.preventDefault();
-        alert("Форма пока не подключена. Настройте Formspree-эндпоинт в index.html.");
-        return;
-      }
+      const name    = form.querySelector('[name="name"]').value.trim();
+      const phone   = form.querySelector('[name="phone"]').value.trim();
+      const email   = form.querySelector('[name="email"]').value.trim();
+      const message = form.querySelector('[name="message"]').value.trim();
 
-      btn.textContent = "Отправляем…";
-      btn.disabled = true;
+      const text = [
+        "Здравствуйте! Оставляю заявку на Vibe42 🚀",
+        "",
+        `Имя: ${name}`,
+        `Телефон: ${phone}`,
+        `Email: ${email}`,
+        message ? `Комментарий: ${message}` : "",
+      ]
+        .filter(Boolean)
+        .join("\n");
+
+      const waUrl = `https://wa.me/77054192399?text=${encodeURIComponent(text)}`;
+
+      // Открываем WhatsApp
+      window.open(waUrl, "_blank");
+
+      // Показываем успех, скрываем форму
+      form.style.display = "none";
+      successBox.style.display = "block";
     });
   }
 });

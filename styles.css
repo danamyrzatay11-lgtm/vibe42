@@ -412,6 +412,33 @@ body {
   text-align: center;
 }
 
+/* ── Success box ── */
+
+.success-box {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  border: 1.5px solid #d1fae5;
+  border-radius: var(--radius);
+  background: #f0fdf4;
+  margin-top: 1rem;
+}
+
+.success-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.success-box h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.success-box p {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
 /* ── Footer ── */
 
 .footer {

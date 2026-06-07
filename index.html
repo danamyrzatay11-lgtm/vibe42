@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vibe42 — Корпоративная программа</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #060C14;
+      --bg2:     #0A1220;
+      --bg3:     #0D1628;
+      --card:    #0F1A2E;
+      --border:  #162236;
+      --accent:  #00C8E8;
+      --accent2: #0099BB;
+      --gray:    #546E7A;
+      --text:    #FFFFFF;
+      --muted:   #8BAABB;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 14px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(6,12,20,0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .logo img {
+      height: 44px; width: auto;
+    }
+    .logo-fallback {
+      font-size: 22px; font-weight: 900; letter-spacing: -0.5px;
+      color: var(--accent);
+    }
+    .nav-cta {
+      background: var(--accent); color: #060C14; border: none; cursor: pointer;
+      padding: 11px 24px; border-radius: 8px; font-size: 14px; font-weight: 700;
+      text-decoration: none; transition: opacity .2s; white-space: nowrap;
+    }
+    .nav-cta:hover { opacity: .85; }
+
+    /* ── SECTION WRAPPERS ── */
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 48px; }
+    section { padding: 96px 0; }
+    .alt { background: var(--bg2); }
+    .alt2 { background: var(--bg3); }
+
+    /* ── LABELS & HEADINGS ── */
+    .lbl {
+      display: inline-block;
+      font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 18px;
+    }
+    h2 {
+      font-size: clamp(26px, 3.8vw, 46px);
+      font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px;
+    }
+    h2 em { font-style: normal; color: var(--accent); }
+    .sec-sub {
+      font-size: 17px; color: var(--muted); line-height: 1.75; max-width: 580px;
+      margin-bottom: 56px;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 130px 0 90px;
+      position: relative; overflow: hidden;
+    }
+    .hero-dots {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(0,200,232,0.12) 1px, transparent 1px);
+      background-size: 44px 44px;
+    }
+    .hero-glow {
+      position: absolute; top: -200px; right: -200px;
+      width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,200,232,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(0,200,232,0.08); border: 1px solid rgba(0,200,232,0.3);
+      padding: 7px 16px; border-radius: 100px;
+      font-size: 13px; font-weight: 500; color: var(--accent);
+      margin-bottom: 36px;
+    }
+    .hero-tag::before {
+      content: ''; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent); animation: blink 2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 68px);
+      font-weight: 900; line-height: 1.07; letter-spacing: -2px;
+      margin-bottom: 28px; max-width: 860px;
+    }
+    h1 em { font-style: normal; color: var(--accent); }
+    .hero-sub {
+      font-size: clamp(15px, 1.8vw, 18px);
+      color: var(--muted); max-width: 620px; line-height: 1.75; margin-bottom: 44px;
+    }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+    .btn-p {
+      background: var(--accent); color: #060C14;
+      padding: 15px 32px; border-radius: 10px; font-size: 15px; font-weight: 700;
+      text-decoration: none; transition: transform .2s, box-shadow .2s; display: inline-block;
+    }
+    .btn-p:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,200,232,0.35); }
+    .btn-s {
+      background: transparent; color: var(--text); border: 1px solid var(--border);
+      padding: 15px 32px; border-radius: 10px; font-size: 15px; font-weight: 600;
+      text-decoration: none; transition: border-color .2s; display: inline-block;
+    }
+    .btn-s:hover { border-color: var(--accent); }
+    .hero-note { font-size: 13px; color: var(--muted); }
+    .hero-stats {
+      display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
+      margin-top: 48px; padding: 24px 32px;
+      background: rgba(0,200,232,0.06); border: 1px solid rgba(0,200,232,0.18);
+      border-radius: 16px; width: fit-content;
+    }
+    .hstat { text-align: left; }
+    .hstat-num { font-size: 36px; font-weight: 900; color: var(--accent); line-height: 1; margin-bottom: 4px; }
+    .hstat-lbl { font-size: 13px; color: var(--muted); max-width: 160px; line-height: 1.4; }
+    .hstat-div { width: 1px; height: 40px; background: var(--border); flex-shrink: 0; }
+
+    /* ── PROBLEMS ── */
+    .problems-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .prob-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 30px;
+      transition: border-color .25s;
+    }
+    .prob-card:hover { border-color: rgba(0,200,232,0.4); }
+    .prob-num {
+      font-size: 40px; font-weight: 900; color: var(--border);
+      line-height: 1; margin-bottom: 14px;
+    }
+    .prob-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+    .prob-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+    /* ── SOLUTION ── */
+    .sol-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .sol-nope p {
+      color: var(--muted); font-size: 15px; padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .sol-nope p::before { content: '✗'; color: #F44336; font-weight: 700; flex-shrink: 0; }
+    .sol-nope { margin-bottom: 0; }
+    .sol-pts { display: flex; flex-direction: column; gap: 18px; }
+    .sol-pt {
+      background: rgba(0,200,232,0.06); border: 1px solid rgba(0,200,232,0.2);
+      border-radius: 12px; padding: 22px;
+    }
+    .sol-pt h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .sol-pt p { font-size: 14px; color: var(--muted); }
+
+    /* ── VIBE CREATOR ── */
+    .tf-flow {
+      display: flex; align-items: stretch; gap: 0;
+      margin: 52px 0; overflow-x: auto; padding-bottom: 4px;
+    }
+    .tf-step {
+      flex: 1; min-width: 160px; text-align: center; padding: 24px 16px;
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    }
+    .tf-step.hi {
+      background: linear-gradient(135deg, rgba(0,200,232,0.25), rgba(0,153,187,0.15));
+      border-color: var(--accent);
+    }
+    .tf-step .ico { font-size: 28px; margin-bottom: 10px; }
+    .tf-step h4 { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+    .tf-step p { font-size: 12px; color: var(--muted); }
+    .tf-arr {
+      color: var(--accent); font-size: 22px; display: flex;
+      align-items: center; padding: 0 12px; flex-shrink: 0;
+    }
+    .traits {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(270px,1fr));
+      gap: 16px;
+    }
+    .trait {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px;
+      transition: border-color .25s;
+    }
+    .trait:hover { border-color: rgba(0,200,232,0.35); }
+    .t-ico {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: rgba(0,200,232,0.12); display: flex; align-items: center;
+      justify-content: center; font-size: 17px; flex-shrink: 0;
+    }
+    .trait h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .trait p { font-size: 13px; color: var(--muted); }
+
+    /* ── FORMAT ── */
+    .fmt-list { display: flex; flex-direction: column; gap: 16px; }
+    .fmt-item {
+      display: flex; gap: 22px; align-items: flex-start;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px;
+      transition: border-color .25s;
+    }
+    .fmt-item:hover { border-color: rgba(0,200,232,0.35); }
+    .fmt-num {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--accent); color: #060C14;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 900; flex-shrink: 0;
+    }
+    .fmt-item h3 { font-size: 17px; font-weight: 700; margin-bottom: 5px; }
+    .fmt-item p { font-size: 14px; color: var(--muted); }
+    .fmt-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0,200,232,0.12); border: 1px solid rgba(0,200,232,0.3);
+      color: var(--accent); font-size: 12px; font-weight: 700;
+      padding: 3px 10px; border-radius: 100px; margin-top: 6px;
+    }
+
+    /* ── PARTICIPANT RESULTS ── */
+    .res-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .res-main {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(0,200,232,0.14), rgba(0,153,187,0.07));
+      border: 1px solid rgba(0,200,232,0.35);
+      border-radius: 20px; padding: 44px; text-align: center;
+    }
+    .res-main .big {
+      font-size: clamp(20px, 3vw, 34px); font-weight: 900; line-height: 1.25;
+      margin-bottom: 14px;
+    }
+    .res-main .big em { font-style: normal; color: var(--accent); }
+    .res-main .note { font-size: 15px; color: var(--muted); }
+    .res-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px;
+      transition: border-color .25s;
+    }
+    .res-card:hover { border-color: rgba(0,200,232,0.35); }
+    .res-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .res-card p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* ── COMPANY RESULTS ── */
+    .ba-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .ba-col {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 32px;
+    }
+    .ba-col.after { border-color: rgba(0,200,232,0.3); }
+    .ba-lbl {
+      font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 24px;
+    }
+    .ba-col.after .ba-lbl { color: var(--accent); }
+    .ba-row {
+      padding: 13px 0; border-bottom: 1px solid var(--border);
+      font-size: 14px; display: flex; gap: 10px; align-items: flex-start; color: var(--muted);
+    }
+    .ba-row::before { content: '—'; flex-shrink: 0; }
+    .ba-col.after .ba-row { color: var(--text); }
+    .ba-col.after .ba-row::before { content: '→'; color: var(--accent); }
+    .ba-row:last-child { border-bottom: none; }
+
+    /* ── PRICING ── */
+    .price-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 20px;
+    }
+    .price-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 34px;
+      display: flex; flex-direction: column;
+      transition: transform .25s, box-shadow .25s;
+      position: relative;
+    }
+    .price-card:hover { transform: translateY(-4px); box-shadow: 0 18px 50px rgba(0,0,0,0.5); }
+    .price-card.pop {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, rgba(0,200,232,0.10), var(--card));
+    }
+    .pop-badge {
+      position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+      background: var(--accent); color: #060C14;
+      font-size: 11px; font-weight: 800; padding: 4px 16px; border-radius: 100px;
+      white-space: nowrap; letter-spacing: .5px;
+    }
+    .p-tier { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .p-name { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .p-range { font-size: 13px; color: var(--muted); margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .p-price { font-size: 38px; font-weight: 900; line-height: 1; margin-bottom: 4px; color: var(--accent); }
+    .p-unit { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+    .p-desc { font-size: 14px; color: var(--muted); line-height: 1.65; flex: 1; }
+    .p-cta {
+      display: block; text-align: center;
+      padding: 13px; border-radius: 10px; font-weight: 700; font-size: 14px;
+      text-decoration: none; margin-top: 24px; transition: opacity .2s;
+      background: var(--accent); color: #060C14;
+    }
+    .p-cta:hover { opacity: .85; }
+    .price-card:not(.pop) .p-cta {
+      background: transparent; border: 1px solid var(--border); color: var(--text);
+    }
+    .price-card:not(.pop) .p-cta:hover { border-color: var(--accent); }
+
+    /* ── ORGANIZER ── */
+    .org-box {
+      display: flex; gap: 40px; align-items: center;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 44px;
+    }
+    .org-ico {
+      width: 72px; height: 72px; border-radius: 16px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: 900; color: #060C14;
+    }
+    .org-box h3 { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
+    .org-box p { font-size: 15px; color: var(--muted); line-height: 1.7; }
+
+    /* ── FINAL ── */
+    #final {
+      text-align: center; padding: 110px 0;
+      background: var(--bg3); position: relative; overflow: hidden;
+    }
+    #final::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(0,200,232,0.12) 0%, transparent 70%);
+    }
+    #final .wrap { position: relative; }
+    #final h2 { max-width: 760px; margin-left: auto; margin-right: auto; margin-bottom: 16px; }
+    .fin-sub { font-size: 17px; color: var(--muted); margin-bottom: 56px; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+    .form-box {
+      max-width: 540px; margin: 0 auto;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 40px; text-align: left;
+    }
+    .form-box h3 { font-size: 19px; font-weight: 700; margin-bottom: 28px; }
+    .f-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .f-row label { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .5px; }
+    .f-row input, .f-row select, .f-row textarea {
+      background: var(--bg2); border: 1px solid var(--border);
+      color: var(--text); padding: 12px 14px; border-radius: 10px;
+      font-size: 14px; font-family: inherit; outline: none;
+      transition: border-color .2s;
+    }
+    .f-row input:focus, .f-row select:focus, .f-row textarea:focus { border-color: var(--accent); }
+    .f-row textarea { min-height: 90px; resize: vertical; }
+    .f-row select { cursor: pointer; appearance: none; }
+    .f-submit {
+      width: 100%; background: var(--accent); color: #060C14;
+      border: none; padding: 15px; border-radius: 10px;
+      font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit;
+      transition: opacity .2s; margin-top: 4px;
+    }
+    .f-submit:hover { opacity: .85; }
+    .f-note { font-size: 12px; color: var(--muted); margin-top: 12px; text-align: center; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 36px 48px;
+      border-top: 1px solid var(--border);
+      font-size: 13px; color: var(--muted);
+    }
+    footer strong { color: var(--text); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 14px 20px; }
+      .wrap { padding: 0 20px; }
+      .sol-cols, .res-wrap, .ba-wrap, .org-box { grid-template-columns: 1fr; gap: 20px; }
+      .res-main { grid-column: 1; }
+      .price-grid { grid-template-columns: 1fr; }
+      .tf-flow { flex-direction: column; }
+      .tf-arr { transform: rotate(90deg); justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <img src="vibe42-logo.png" alt="Vibe42" style="height:48px; width:auto;" />
+  </div>
+  <a href="#final" class="nav-cta">Оставить заявку</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-dots"></div>
+  <div class="hero-glow"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-tag">Корпоративная программа · Vibe42</div>
+    <h1>Vibe42: Вайбкодинг и применение <em>AI-инструментов</em> в корпоративной среде</h1>
+    <p class="hero-sub">Vibe42 — практическая корпоративная программа, в рамках которой сотрудники любых специальностей создают собственные цифровые решения, автоматизируют процессы и внедряют AI в ежедневную работу. Без глубоких знаний программирования. С реальным результатом на выходе.</p>
+    <div class="hero-btns">
+      <a href="#final" class="btn-p">Оставить заявку</a>
+      <a href="#pricing" class="btn-s">Форматы и стоимость</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat">
+        <div class="hstat-num">600+</div>
+        <div class="hstat-lbl">сотрудников прошли обучение</div>
+      </div>
+      <div class="hstat-div"></div>
+      <div class="hstat">
+        <div class="hstat-num">∞</div>
+        <div class="hstat-lbl">программа открыта для любого сектора и отрасли</div>
+      </div>
+      <div class="hstat-div"></div>
+      <div class="hstat">
+        <div class="hstat-num">100%</div>
+        <div class="hstat-lbl">участников создают реальный продукт</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMS -->
+<section class="alt">
+  <div class="wrap">
+    <div class="lbl">Вызовы рынка</div>
+    <h2>Цифровая трансформация буксует.<br/>И вот почему.</h2>
+    <p class="sec-sub">Большинство компаний понимают, что AI меняет бизнес. Но переход от понимания к результату — именно то место, где застревают.</p>
+    <div class="problems-grid">
+      <div class="prob-card">
+        <div class="prob-num">01</div>
+        <h3>Рутина съедает ресурс</h3>
+        <p>Сотрудники тратят часы на задачи, которые AI может решить за минуты. Отчёты, сводки, переписка, анализ данных — всё это можно автоматизировать. Но пока никто не знает как.</p>
+      </div>
+      <div class="prob-card">
+        <div class="prob-num">02</div>
+        <h3>AI внедряют, но результата нет</h3>
+        <p>Компании покупают подписки на AI-сервисы, проводят вводные лекции и... возвращаются к привычным инструментам. Потому что обучение оторвано от реальных задач.</p>
+      </div>
+      <div class="prob-card">
+        <div class="prob-num">03</div>
+        <h3>Нет людей, которые умеют создавать</h3>
+        <p>Спрос на специалистов, способных быстро разработать цифровое решение, кратно превышает предложение. Разработчики заняты. Внешние подрядчики — дорого и долго.</p>
+      </div>
+      <div class="prob-card">
+        <div class="prob-num">04</div>
+        <h3>Трансформация остаётся на слайдах</h3>
+        <p>Стратегии есть. Дорожные карты есть. Не хватает людей внутри компании, которые умеют переводить идеи в работающие решения.</p>
+      </div>
+      <div class="prob-card">
+        <div class="prob-num">05</div>
+        <h3>Конкуренты не ждут</h3>
+        <p>Компании, которые сформируют внутреннюю AI-экспертизу сегодня, получат устойчивое преимущество на горизонте трёх-пяти лет.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section>
+  <div class="wrap">
+    <div class="lbl">Решение</div>
+    <div class="sol-cols">
+      <div>
+        <h2>Vibe42 — не курс по AI.<br/>Это производственная среда.</h2>
+        <p class="sec-sub" style="margin-bottom:28px;">Сотрудники не слушают лекции. Они создают.</p>
+        <div class="sol-nope">
+          <p>Теоретические курсы, после которых непонятно что делать</p>
+          <p>Обучение на чужих кейсах, оторванных от реальной работы</p>
+          <p>Очередные презентации «про AI» без практического выхода</p>
+        </div>
+      </div>
+      <div class="sol-pts">
+        <div class="sol-pt">
+          <h4>Практика с первых минут обучения</h4>
+          <p>Участники сразу приступают к работе с AI-инструментами и решению реальных задач. Минимум теории — максимум практики.</p>
+        </div>
+        <div class="sol-pt">
+          <h4>Собственный проект</h4>
+          <p>Каждый создаёт решение под свою рабочую задачу — не учебный пример, а реальный продукт.</p>
+        </div>
+        <div class="sol-pt">
+          <h4>Результат, а не сертификат</h4>
+          <p>Главный итог — работающее цифровое решение. Сертификат прилагается.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIBE CREATOR -->
+<section class="alt">
+  <div class="wrap">
+    <div class="lbl">Концепция</div>
+    <h2>Vibe Creator — новый тип сотрудника<br/>цифровой эпохи</h2>
+    <p class="sec-sub">Раньше создавать цифровые продукты могли только разработчики. AI изменил это правило навсегда.</p>
+
+    <div class="tf-flow">
+      <div class="tf-step">
+        <div class="ico">👤</div>
+        <h4>Обычный сотрудник</h4>
+        <p>Использует стандартные инструменты</p>
+      </div>
+      <div class="tf-arr">→</div>
+      <div class="tf-step">
+        <div class="ico">🤖</div>
+        <h4>Пользователь AI</h4>
+        <p>Применяет AI-инструменты в работе</p>
+      </div>
+      <div class="tf-arr">→</div>
+      <div class="tf-step">
+        <div class="ico">⚙️</div>
+        <h4>Создатель решений</h4>
+        <p>Разрабатывает автоматизации и продукты</p>
+      </div>
+      <div class="tf-arr">→</div>
+      <div class="tf-step hi">
+        <div class="ico">🚀</div>
+        <h4>Vibe Creator</h4>
+        <p>Драйвер изменений внутри компании</p>
+      </div>
+    </div>
+
+    <div class="traits">
+      <div class="trait"><div class="t-ico">💡</div><div><h4>Решает задачи через технологии</h4><p>Не ждёт помощи от IT-отдела — создаёт сам</p></div></div>
+      <div class="trait"><div class="t-ico">🛠</div><div><h4>Создаёт без разработчиков</h4><p>Разрабатывает цифровые продукты без IT-команды</p></div></div>
+      <div class="trait"><div class="t-ico">⚡</div><div><h4>Автоматизирует процессы</h4><p>Собственные и командные рутины — быстро и самостоятельно</p></div></div>
+      <div class="trait"><div class="t-ico">🧪</div><div><h4>Быстро тестирует идеи</h4><p>От концепции до прототипа — за часы, не месяцы</p></div></div>
+      <div class="trait"><div class="t-ico">📈</div><div><h4>Источник инноваций</h4><p>Становится точкой роста внутри своего подразделения</p></div></div>
+      <div class="trait"><div class="t-ico">🔗</div><div><h4>Масштабирует экспертизу</h4><p>Передаёт подходы коллегам, формирует культуру</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMAT -->
+<section>
+  <div class="wrap">
+    <div class="lbl">Формат программы</div>
+    <h2>Как устроена программа</h2>
+    <p class="sec-sub">Очный формат. Реальные задачи. Сопровождение на каждом этапе.</p>
+    <div class="fmt-list">
+      <div class="fmt-item">
+        <div class="fmt-num">1</div>
+        <div>
+          <h3>Очное обучение</h3>
+          <p>Программа проводится в очном формате — это обеспечивает глубокое погружение, живую практику и полный фокус участников.</p>
+          <span class="fmt-badge">⏱ До 4 часов</span>
+        </div>
+      </div>
+      <div class="fmt-item">
+        <div class="fmt-num">2</div>
+        <div>
+          <h3>Работа над собственными задачами</h3>
+          <p>Каждый участник с первых минут работает над своей реальной профессиональной задачей. Никаких учебных кейсов из чужих отраслей.</p>
+        </div>
+      </div>
+      <div class="fmt-item">
+        <div class="fmt-num">3</div>
+        <div>
+          <h3>Инженер технической поддержки</h3>
+          <p>На каждой сессии присутствует инженер технической поддержки — для решения технических вопросов в режиме реального времени.</p>
+        </div>
+      </div>
+      <div class="fmt-item">
+        <div class="fmt-num">4</div>
+        <div>
+          <h3>Сертифицированные коучи и эксперты</h3>
+          <p>Программу ведут квалифицированные эксперты и сертифицированные коучи.</p>
+        </div>
+      </div>
+      <div class="fmt-item">
+        <div class="fmt-num">5</div>
+        <div>
+          <h3>Собственный AI-продукт</h3>
+          <p>К финалу программы каждый участник создаёт работающий цифровой продукт или автоматизацию под его реальную задачу.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTICIPANT RESULTS -->
+<section class="alt">
+  <div class="wrap">
+    <div class="lbl">Результат для участника</div>
+    <h2>Что получает участник на выходе</h2>
+    <div class="res-wrap">
+      <div class="res-main">
+        <div class="big">Каждый участник завершает программу<br/>с <em>собственным работающим цифровым продуктом</em><br/>или автоматизацией</div>
+        <p class="note">Созданным под его реальную профессиональную задачу. Не учебный пример. Реальное решение.</p>
+      </div>
+      <div class="res-card">
+        <h3>Навыки, которые применяются сразу</h3>
+        <p>Практический опыт работы с актуальными AI-инструментами, востребованными на рынке прямо сейчас.</p>
+      </div>
+      <div class="res-card">
+        <h3>Готовые решения для работы</h3>
+        <p>Продукт, автоматизация или AI-помощник, который начинает приносить результат уже в процессе обучения.</p>
+      </div>
+      <div class="res-card">
+        <h3>Способность создавать самостоятельно</h3>
+        <p>После программы участник умеет разрабатывать новые решения и автоматизации без внешней помощи.</p>
+      </div>
+      <div class="res-card">
+        <h3>Статус Vibe Creator</h3>
+        <p>Новый профессиональный статус — специалиста, умеющего создавать цифровые решения с помощью AI.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPANY RESULTS -->
+<section>
+  <div class="wrap">
+    <div class="lbl">Результат для компании</div>
+    <h2>Что получает компания</h2>
+    <p class="sec-sub">Измеримые бизнес-эффекты. Не декларации.</p>
+    <div class="ba-wrap">
+      <div class="ba-col">
+        <div class="ba-lbl">До Vibe42</div>
+        <div class="ba-row">AI — тема для IT-отдела</div>
+        <div class="ba-row">Идеи застревают в очереди к разработчикам</div>
+        <div class="ba-row">Цифровая трансформация — в стратегии</div>
+        <div class="ba-row">Внешние подрядчики для каждой задачи</div>
+        <div class="ba-row">Рутина отнимает рабочее время</div>
+      </div>
+      <div class="ba-col after">
+        <div class="ba-lbl">После Vibe42</div>
+        <div class="ba-row">AI — инструмент каждого сотрудника</div>
+        <div class="ba-row">Решения создаются внутри подразделений</div>
+        <div class="ba-row">Цифровая трансформация — в рабочих процессах</div>
+        <div class="ba-row">Внутренние Vibe Creators закрывают задачи</div>
+        <div class="ba-row">Автоматизация возвращает часы в продуктивность</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="alt" id="pricing">
+  <div class="wrap">
+    <div class="lbl">Стоимость участия</div>
+    <h2>Форматы участия</h2>
+    <p class="sec-sub">Выберите формат под размер вашей команды.</p>
+    <div class="price-grid">
+
+      <div class="price-card">
+        <div class="p-tier">Персональный</div>
+        <div class="p-name">Персональный формат</div>
+        <div class="p-range">До 3 участников</div>
+        <div class="p-price">400 000 ₸</div>
+        <div class="p-unit">за участника · без учёта НДС</div>
+        <p class="p-desc">Для руководителей и ключевых специалистов, которым необходима глубокая индивидуальная работа с экспертами.</p>
+        <a href="#final" class="p-cta">Оставить заявку</a>
+      </div>
+
+      <div class="price-card pop">
+        <div class="pop-badge">Популярный выбор</div>
+        <div class="p-tier">Командный</div>
+        <div class="p-name">Командный формат</div>
+        <div class="p-range">От 4 до 19 участников</div>
+        <div class="p-price">200 000 ₸</div>
+        <div class="p-unit">за участника · без учёта НДС</div>
+        <p class="p-desc">Для команд, подразделений и групп специалистов одного или смежных направлений.</p>
+        <a href="#final" class="p-cta">Оставить заявку</a>
+      </div>
+
+      <div class="price-card">
+        <div class="p-tier">Корпоративный</div>
+        <div class="p-name">Корпоративный поток</div>
+        <div class="p-range">От 20 участников</div>
+        <div class="p-price">100 000 ₸</div>
+        <div class="p-unit">за участника · без учёта НДС</div>
+        <p class="p-desc">Для крупных компаний, корпоративных университетов и масштабных программ цифровых компетенций.</p>
+        <a href="#final" class="p-cta">Оставить заявку</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- FINAL -->
+<div id="final">
+  <div class="wrap">
+    <div class="lbl">Начать работу</div>
+    <h2>AI уже меняет бизнес. Вопрос в том, когда ваша команда начнёт его создавать.</h2>
+    <p class="fin-sub">Vibe42 помогает компаниям перейти от разговоров об искусственном интеллекте к созданию работающих решений.</p>
+
+    <div class="form-box">
+      <h3>Оставить заявку на корпоративное обучение</h3>
+      <div class="f-row">
+        <label>ИМЯ</label>
+        <input type="text" placeholder="Имя и фамилия" />
+      </div>
+      <div class="f-row">
+        <label>КОМПАНИЯ</label>
+        <input type="text" placeholder="Название организации" />
+      </div>
+      <div class="f-row">
+        <label>КОНТАКТ</label>
+        <input type="text" placeholder="Email или телефон" />
+      </div>
+      <div class="f-row">
+        <label>ФОРМАТ УЧАСТИЯ</label>
+        <select>
+          <option value="">Выберите формат</option>
+          <option>Персональный (до 3 человек) — 400 000 ₸</option>
+          <option>Командный (4–19 человек) — 200 000 ₸</option>
+          <option>Корпоративный поток (20+) — 100 000 ₸</option>
+        </select>
+      </div>
+      <div class="f-row">
+        <label>КОММЕНТАРИЙ</label>
+        <textarea placeholder="Расскажите о задачах компании или количестве участников"></textarea>
+      </div>
+      <button class="f-submit" onclick="sendWhatsApp()">Отправить заявку →</button>
+      <p class="f-note">Ответим в течение одного рабочего дня и подготовим индивидуальное предложение</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  Организатор: РОО «Федерация по спортивному программированию» при поддержке АО «Казахтелеком» · Казахстан
+</footer>
+
+<script>
+function sendWhatsApp() {
+  const name = document.querySelectorAll('.f-row input')[0].value.trim();
+  const company = document.querySelectorAll('.f-row input')[1].value.trim();
+  const contact = document.querySelectorAll('.f-row input')[2].value.trim();
+  const format = document.querySelector('.f-row select').value;
+  const comment = document.querySelector('.f-row textarea').value.trim();
+
+  if (!name || !company || !contact) {
+    alert('Пожалуйста, заполните имя, компанию и контакт.');
+    return;
+  }
+
+  const msg = `Заявка на корпоративное обучение Vibe42
+
+👤 Имя: ${name}
+🏢 Компания: ${company}
+📞 Контакт: ${contact}
+📋 Формат: ${format || 'не указан'}
+💬 Комментарий: ${comment || '—'}`;
+
+  const url = `https://wa.me/87054192399?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+</script>
+</body>
+</html>
